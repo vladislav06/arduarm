@@ -91,7 +91,7 @@ namespace USB {
 			NULL);
 
 		if (Status == TRUE)
-			printf("\n\n    %s - Written to %s", lpBuffer, ComPortName);
+			printf("\n\n   Written to %s", ComPortName);
 		else
 			printf("\n\n   Error %d in Writing to Serial Port", GetLastError());
 

@@ -7,6 +7,7 @@
 #include <bitset>
 #include <climits>
 #include"usb.h"
+#include <conio.h>
 using namespace std;
 //			команды 
 #define move 199		// движение		
@@ -357,25 +358,27 @@ int main()
 			break;
 			case 'S':			// решаем координаты
 
-				cords = solver(dest);
-				angles = converter(cords);
-				data.angle = angles;
-				eeprom_writer(EEPROM,move,data);
+				cords = solver(dest);			//решаем
+				angles = converter(cords);		// конвертируем корды в углы
+				data.angle = angles;			// запихиваем то что отправляем
+				eeprom_writer(EEPROM,move,data);//пишем в память
+
 				cout << "++++++++" << endl;
 				cout << angles.angle[0] << endl;
 				cout << angles.angle[1] << endl;
 				cout << angles.rootAngle << endl;
 				cout << "++++++++" << endl;
+
 			break;
 			}
 		}
 	}
 
-	file.close();
-	char ComPortName[] = "\\\\.\\COM4";
-	USB::write(ComPortName,EEPROM);
+	file.close();						//закрываем бадягу
+	char ComPortName[] = "\\\\.\\COM4";	// порт в который шлем наш мусор
+	USB::write(ComPortName,EEPROM);		// ну и отсылаем
 	
-	int vol;
+	//int vol;
 	/*
 	cout << "------" << endl;
 	cout << "------" << endl;
@@ -403,7 +406,7 @@ int main()
 		
 		cout << std::bitset<sizeof(EEPROM[i]) * CHAR_BIT>(EEPROM[i])  <<"|"<< int(EEPROM[i]) << endl;
 	}
-
-	cin >> vol;
+	_getch();
+	//cin >> vol;
 
 }
