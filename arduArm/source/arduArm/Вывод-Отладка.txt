@@ -1,0 +1,13 @@
+﻿"arduArm.exe" (Win32). Загружено "C:\Users\mrkev\Google Диск\project_sync\arduArm\source\arduArm\x64\Debug\arduArm.exe". Символы загружены.
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\ntdll.dll". 
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\kernel32.dll". 
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\KernelBase.dll". 
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\msvcp140d.dll". 
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\vcruntime140d.dll". 
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\vcruntime140_1d.dll". 
+"arduArm.exe" (Win32). Загружено "C:\Windows\System32\ucrtbased.dll". 
+Поток 0x296c завершился с кодом 0 (0x0).
+Поток 0x2814 завершился с кодом -1073741510 (0xc000013a).
+Поток 0x2168 завершился с кодом -1073741510 (0xc000013a).
+Поток 0x2a70 завершился с кодом -1073741510 (0xc000013a).
+Программа "[11296] arduArm.exe" завершилась с кодом -1073741510 (0xc000013a).

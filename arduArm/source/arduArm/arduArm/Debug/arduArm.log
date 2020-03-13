@@ -1,0 +1,8 @@
+﻿  arduArm.cpp
+F:\projects\arduArm\source\arduArm\arduArm\arduArm.cpp(137,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduArm\source\arduArm\arduArm\arduArm.cpp(138,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduArm\source\arduArm\arduArm\arduArm.cpp(140,27): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduArm\source\arduArm\arduArm\arduArm.cpp(151,9): warning C4018: >: несоответствие типов со знаком и без знака
+F:\projects\arduArm\source\arduArm\arduArm\arduArm.cpp(204,21): warning C4018: <=: несоответствие типов со знаком и без знака
+F:\projects\arduArm\source\arduArm\arduArm\arduArm.cpp(192,7): warning C4101: Cline: неиспользованная локальная переменная
+  arduArm.vcxproj -> F:\projects\arduArm\source\arduArm\Debug\arduArm.exe
