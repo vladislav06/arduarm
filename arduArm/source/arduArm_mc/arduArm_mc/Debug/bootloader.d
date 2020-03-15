@@ -1,4 +1,4 @@
-main.d main.o: .././main.c .././main.h \
+bootloader.d bootloader.o: .././bootloader.c \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdint.h \
@@ -12,19 +12,8 @@ main.d main.o: .././main.c .././main.h \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.c \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.h \
- f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h
-
-.././main.h:
+ f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.h
 
 f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h:
 
@@ -52,24 +41,6 @@ f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
-
 f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
 
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.c:
-
 f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\uart.h:
-
-f:\atmel\ studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
