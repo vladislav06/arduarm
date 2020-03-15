@@ -33,7 +33,7 @@ void boot_eeprom(void){
 	
 	while(eeprom_cell<1024){
 		byte = uart_getc();		//в переменную
-		eeprom_write_byte(eeprom_cell,byte);	//записыцваем в еепром
+		eeprom_write_byte(eeprom_cell,byte);	//записываем в еепром
 		eeprom_cell++;		// €чейча +1
 	}
 	
