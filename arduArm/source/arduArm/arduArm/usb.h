@@ -4,6 +4,6 @@
 namespace USB {
 
 	 void write(char ComPortName[], uint8_t lpBuffer[]);
-
+	 
 }
 #endif

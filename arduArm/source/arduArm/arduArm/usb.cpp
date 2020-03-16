@@ -3,10 +3,14 @@
 #include <string.h>
 #include <fileapi.h>
 #include <cstdint>
+#include <iostream>
+#include <bitset>
+#include <climits>
 
 namespace USB {
 	void write(char ComPortName[], uint8_t lpBuffer[])
 	{
+		
 
 		HANDLE hComm;                          // Handle to the Serial port
 		//*ComPortName = char("\\\\.\\COM10");// Name of the Serial port(May Change) to be opened,
@@ -16,7 +20,7 @@ namespace USB {
 		printf("\n |  Serial Transmission (Win32 API)         |");
 		printf("\n +==========================================+\n");
 		/*----------------------------------- Opening the Serial Port --------------------------------------------*/
-
+		open:
 		hComm = CreateFileA(LPCSTR(ComPortName),                        // Name of the Port to be Opened
 			GENERIC_READ | GENERIC_WRITE,      // Read/Write Access
 			0,                                 // No Sharing, ports cant be shared
@@ -25,10 +29,9 @@ namespace USB {
 			0,                                 // Non Overlapped I/O
 			NULL);                             // Null for Comm Devices
 
-		if (hComm == INVALID_HANDLE_VALUE)
-			printf("\n   Error! - Port %s can't be opened", ComPortName);
-		else
-			printf("\n   Port %s Opened\n ", ComPortName);
+		if (hComm == INVALID_HANDLE_VALUE) {
+			goto open;
+		}
 
 
 		/*------------------------------- Setting the Parameters for the SerialPort ------------------------------*/
@@ -43,9 +46,9 @@ namespace USB {
 
 		dcbSerialParams.BaudRate = CBR_9600;      // Setting BaudRate = 9600
 		dcbSerialParams.ByteSize = 8;             // Setting ByteSize = 8
-		dcbSerialParams.StopBits = ONESTOPBIT;    // Setting StopBits = 1
+		dcbSerialParams.StopBits = 1;    // Setting StopBits = 1
 		dcbSerialParams.Parity = NOPARITY;      // Setting Parity = None 
-
+	
 		Status = SetCommState(hComm, &dcbSerialParams);  //Configuring the port according to settings in DCB 
 
 		if (Status == FALSE)
@@ -74,7 +77,7 @@ namespace USB {
 		if (SetCommTimeouts(hComm, &timeouts) == FALSE)
 			printf("\n   Error! in Setting Time Outs");
 		else
-			printf("\n\n   Setting Serial Port Timeouts Successfull");
+			printf("\n\n   Setting Serial Port Timeouts Successfull\n");
 
 
 		/*----------------------------- Writing a Character to Serial Port----------------------------------------*/
@@ -83,13 +86,54 @@ namespace USB {
 		DWORD  dNoOfBytesWritten = 0;          // No of bytes written to the port
 
 		dNoOFBytestoWrite = sizeof(lpBuffer); // Calculating the no of bytes to write into the port
+		
+		uint8_t reciveD[2];
+		DWORD lpNumberOfBytesRead;
 
-		Status = WriteFile(hComm,               // Handle to the Serialport
-			lpBuffer,            // Data to be written to the port 
-			dNoOFBytestoWrite,   // No of bytes to write into the port
-			&dNoOfBytesWritten,  // No of bytes written to the port
+		printf("reading....\n");
+
+	read:
+
+		Status = ReadFile(hComm,
+			reciveD,
+			2,
+			&lpNumberOfBytesRead,
 			NULL);
 
+	//	std::cout << std::bitset<sizeof(reciveD[0]) * CHAR_BIT>(reciveD[0]) << "|" << int(reciveD[0]) << std::endl;
+
+		if (Status) {
+			if (reciveD[0] == 85) {
+				goto write;
+			}
+			else {
+				//printf("byte err \n");
+				goto read;
+			}
+		}
+		else {
+			printf("read err \n");
+			goto read;
+		}
+		
+		
+	write:
+		std::cout << "wrirte" << std::endl;
+
+
+		uint8_t buffer[2];
+		for (int i = 0; i < 1024; i += 2) {
+
+			buffer[0] = lpBuffer[i];
+			buffer[1] = lpBuffer[i+1];
+			Status = WriteFile(hComm,               // Handle to the Serialport
+				buffer,            // Data to be written to the port 
+				2,   // No of bytes to write into the port
+				&dNoOfBytesWritten,  // No of bytes written to the port
+				NULL);
+			//std::cout << dNoOfBytesWritten << std::endl;
+
+		}
 		if (Status == TRUE)
 			printf("\n\n   Written to %s", ComPortName);
 		else

@@ -22,7 +22,7 @@ int main(void) {
 	//tmp
 	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU));	//init uart to get data
 	sei();
-	uart_putc(255);
+	
 	//---------
 	
 	uint8_t data = 0;
@@ -31,7 +31,7 @@ int main(void) {
 	PORTB = 0xFF;			//pull up
 	data = PINB;
 	
-	uart_putc(data);
+	_delay_ms(1000);
 	
 	if(data == 0b00000000){	//if 8 is off
 		boot_eeprom();				// download programm and load it to eeprom
