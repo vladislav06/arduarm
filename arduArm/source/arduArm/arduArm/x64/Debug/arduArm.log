@@ -1,2 +1,10 @@
-﻿  usb.cpp
+﻿  arduArm.cpp
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(166,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(167,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(169,27): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(251,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(259,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(267,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(361,28): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(325,7): warning C4101: Cline: неиспользованная локальная переменная
   arduArm.vcxproj -> F:\projects\arduarm\arduArm\source\arduArm\x64\Debug\arduArm.exe

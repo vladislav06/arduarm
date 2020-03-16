@@ -6,7 +6,7 @@
 #include <iostream>
 #include <bitset>
 #include <climits>
-
+#include <chrono>
 namespace USB {
 	void write(char ComPortName[], uint8_t lpBuffer[])
 	{
@@ -121,17 +121,19 @@ namespace USB {
 		std::cout << "wrirte" << std::endl;
 
 
-		uint8_t buffer[2];
-		for (int i = 0; i < 1024; i += 2) {
+		uint8_t buffer[1];
+		for (int i = 0; i < 1024; i += 1) {
 
 			buffer[0] = lpBuffer[i];
-			buffer[1] = lpBuffer[i+1];
+			//buffer[1] = lpBuffer[i+1];
+
+
 			Status = WriteFile(hComm,               // Handle to the Serialport
 				buffer,            // Data to be written to the port 
-				2,   // No of bytes to write into the port
+				1,   // No of bytes to write into the port
 				&dNoOfBytesWritten,  // No of bytes written to the port
 				NULL);
-			//std::cout << dNoOfBytesWritten << std::endl;
+			Sleep(2);
 
 		}
 		if (Status == TRUE)

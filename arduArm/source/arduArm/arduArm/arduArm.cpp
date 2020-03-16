@@ -295,6 +295,11 @@ int main()
 {
 	
 	uint8_t EEPROM[1024];// память...
+	for (int i = 0; i < 1024; i++) {
+
+
+		EEPROM[i] = 0;
+	}
 	pM cords;			//корды для углов
 	angles angles;		//углы
 	string path;		//путь
@@ -403,7 +408,7 @@ int main()
 	*/
 	cout << "eeprom" << endl;
 
-	for (int i = 0; i <= 20; i++) {
+	for (int i = 0; i < 1024; i++) {
 		
 		cout << std::bitset<sizeof(EEPROM[i]) * CHAR_BIT>(EEPROM[i])  <<"|"<< int(EEPROM[i]) << endl;
 	}
