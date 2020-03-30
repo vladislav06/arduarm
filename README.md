@@ -1,3 +1,3 @@
 # arduarm
-arduino based arm all writed in pure c \n
+arduino based arm all writed in pure c
           *arduino as avr mc source
