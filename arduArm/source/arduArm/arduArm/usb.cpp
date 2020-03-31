@@ -7,8 +7,9 @@
 #include <bitset>
 #include <climits>
 #include <chrono>
+
 namespace USB {
-	void write(char ComPortName[], uint8_t lpBuffer[])
+	void write(char ComPortName[], uint8_t lpBuffer[], uint16_t last_cell)
 	{
 		
 
@@ -93,7 +94,7 @@ namespace USB {
 		printf("reading....\n");
 
 	read:
-
+		
 		Status = ReadFile(hComm,
 			reciveD,
 			2,
@@ -103,25 +104,35 @@ namespace USB {
 	//	std::cout << std::bitset<sizeof(reciveD[0]) * CHAR_BIT>(reciveD[0]) << "|" << int(reciveD[0]) << std::endl;
 
 		if (Status) {
-			if (reciveD[0] == 85) {
-				goto write;
+			if (reciveD[0] == 85) {	//wait for sync(ready to recive) byte
+				goto write;			// if we got that then write!
 			}
 			else {
 				//printf("byte err \n");
-				goto read;
+				goto read;			// if we dont got that sad(((
 			}
 		}
 		else {
 			printf("read err \n");
-			goto read;
+			goto read;				// if we dont got that sad(((
 		}
 		
 		
 	write:
 		std::cout << "wrirte" << std::endl;
-
-
 		uint8_t buffer[1];
+
+		//=============send lenght of data=============//
+		buffer[0] = last_cell;
+
+			Status = WriteFile(hComm,               // Handle to the Serialport
+			buffer,						// Data to be written to the port 
+			1,							// No of bytes to write into the port
+			&dNoOfBytesWritten,			// No of bytes written to the port
+			NULL);
+		Sleep(10+(last_cell*2));
+		//+++++++++++send data++++++++++++//
+		
 		for (int i = 0; i < 1024; i += 1) {
 
 			buffer[0] = lpBuffer[i];
@@ -129,13 +140,15 @@ namespace USB {
 
 
 			Status = WriteFile(hComm,               // Handle to the Serialport
-				buffer,            // Data to be written to the port 
-				1,   // No of bytes to write into the port
-				&dNoOfBytesWritten,  // No of bytes written to the port
+				buffer,					// Data to be written to the port 
+				1,						// No of bytes to write into the port
+				&dNoOfBytesWritten,		// No of bytes written to the port
 				NULL);
 			Sleep(2);
 
 		}
+
+
 		if (Status == TRUE)
 			printf("\n\n   Written to %s", ComPortName);
 		else

@@ -1,19 +1,18 @@
-﻿#define _USE_MATH_DEFINES
-#include <iostream>
-#include <cmath>
+﻿#include <iostream>
 #include <fstream>
 #include <string>
 #include "MVector.h"
 #include <bitset>
 #include <climits>
+#include <cmath>
 #include"usb.h"
 #include <conio.h>
-
+#define PI 3.14159265359
 using namespace std;
 //			команды 
 #define move 199		// движение		
 #define wait 202		//ждем
-
+#define end 255			// end of programm
 //------------------------
 MVector::point dest;
 
@@ -163,10 +162,10 @@ pM solver(MVector::point dest)
 angles converter(pM solved)
 {
 	angles n;
-	n.angle[0] = 180 / M_PI * atan2f(solved.p[1].y, solved.p[1].x);
-	n.angle[1] = 180 / M_PI * atan2f(dif(solved.p[2], solved.p[1]).y, dif(solved.p[2], solved.p[1]).x);
+	n.angle[0] = 180 / PI * atan2f(solved.p[1].y, solved.p[1].x);
+	n.angle[1] = 180 / PI * atan2f(dif(solved.p[2], solved.p[1]).y, dif(solved.p[2], solved.p[1]).x);
 
-	n.rootAngle = 180 / M_PI * atan2f(solved.p[1].z, solved.p[1].y);
+	n.rootAngle = 180 / PI * atan2f(solved.p[1].z, solved.p[1].y);
 	return n;
 
 }
@@ -227,7 +226,7 @@ void eeprom_writer( uint8_t *eeprom, unsigned int command ,data_E data) {
 		
 	int last_cell = eeprom_cell_num;		// записываем номер ячейки начала этой команды
 
-	
+	uint8_t controll_byte = 0;
 
 	if (eeprom_cell_num >=1024 ) {			// проверяем нет ли переполнения
 		return;						
@@ -237,7 +236,7 @@ void eeprom_writer( uint8_t *eeprom, unsigned int command ,data_E data) {
 
 	if (command == move) {							// если двигаем 
 
-		uint8_t controll_byte = command;	//контрольный байт
+		 controll_byte = command;	//контрольный байт
 
 
 		eeprom_cell_num++;		// оставляем место для контрольного байта
@@ -277,16 +276,16 @@ void eeprom_writer( uint8_t *eeprom, unsigned int command ,data_E data) {
 
 	} 
 	else if (command == wait) {				// если ждем
-		uint8_t controll_byte = command;	//контрольный байт
+		 controll_byte = command;	//контрольный байт
 		*eeprom++ = command;
 		eeprom_cell_num++;
 		*eeprom++ = data.wait_s;
 		eeprom_cell_num++;
 	} 
-	
-
-
-
+	else if (command == end) { 
+		controll_byte = command;
+		*eeprom++ = command;
+	}
 }
 
 
@@ -296,8 +295,6 @@ int main()
 	
 	uint8_t EEPROM[1024];// память...
 	for (int i = 0; i < 1024; i++) {
-
-
 		EEPROM[i] = 0;
 	}
 	pM cords;			//корды для углов
@@ -320,7 +317,9 @@ int main()
 			break;
 		}
 	}
+
 	eeprom_settings(EEPROM);
+
 	string line;
 	char Cline[50];
 	ifstream file(path);
@@ -366,8 +365,8 @@ int main()
 
 				cords = solver(dest);			//решаем
 				angles = converter(cords);		// конвертируем корды в углы
-				data.angle = angles;			// запихиваем то что отправляем
-				eeprom_writer(EEPROM,move,data);//пишем в память
+				data.angle = angles;				// запихиваем то что отправляем
+				eeprom_writer(EEPROM, move, data);	//пишем в память
 
 				cout << "++++++++" << endl;
 				cout << angles.angle[0] << endl;
@@ -376,15 +375,18 @@ int main()
 				cout << "++++++++" << endl;
 
 			break;
+			
 			}
 		}
 	}
 
 	file.close();						//закрываем бадягу
+	eeprom_writer(EEPROM, end, data);	//send end byte
 	char ComPortName[] = "\\\\.\\COM4";	// порт в который шлем наш мусор
-	USB::write(ComPortName,EEPROM);		// ну и отсылаем
+	USB::write(ComPortName,EEPROM,eeprom_cell_num);		// ну и отсылаем
+
+	//eeprom_cell_num  last cell
 	
-	//int vol;
 	/*
 	cout << "------" << endl;
 	cout << "------" << endl;

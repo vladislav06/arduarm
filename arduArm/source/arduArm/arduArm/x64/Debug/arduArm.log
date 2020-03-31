@@ -1,10 +1,14 @@
-﻿  arduArm.cpp
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(166,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(167,26): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(169,27): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(251,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(259,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(267,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(361,28): warning C4244: =: преобразование "float" в "int", возможна потеря данных
-F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(325,7): warning C4101: Cline: неиспользованная локальная переменная
-  arduArm.vcxproj -> F:\projects\arduarm\arduArm\source\arduArm\x64\Debug\arduArm.exe
+﻿  MVector.cpp
+usb.obj : error LNK2005: "struct angles __cdecl converter(struct pM)" (?converter@@YA?AUangles@@UpM@@@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: "void __cdecl eeprom_settings(unsigned char * const)" (?eeprom_settings@@YAXQEAE@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: "void __cdecl eeprom_writer(unsigned char *,unsigned int,struct data_E)" (?eeprom_writer@@YAXPEAEIUdata_E@@@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: "unsigned char * __cdecl move_arr(unsigned char *,int)" (?move_arr@@YAPEAEPEAEH@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: "void __cdecl out(struct MVector::point)" (?out@@YAXUpoint@MVector@@@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: "float __cdecl readFloat(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,int)" (?readFloat@@YAMV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: "struct pM __cdecl solver(struct MVector::point)" (?solver@@YA?AUpM@@Upoint@MVector@@@Z) уже определен в arduArm.obj
+usb.obj : error LNK2005: main уже определен в arduArm.obj
+usb.obj : error LNK2005: "struct MVector::point dest" (?dest@@3Upoint@MVector@@A) уже определен в arduArm.obj
+usb.obj : error LNK2005: "struct setup settings" (?settings@@3Usetup@@A) уже определен в arduArm.obj
+usb.obj : error LNK2005: "int eeprom_cell_num" (?eeprom_cell_num@@3HA) уже определен в arduArm.obj
+usb.obj : error LNK2005: "struct angles last_angles" (?last_angles@@3Uangles@@A) уже определен в arduArm.obj
+F:\projects\arduarm\arduArm\source\arduArm\x64\Debug\arduArm.exe : fatal error LNK1169: обнаружен многократно определенный символ - один или более
