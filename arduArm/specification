@@ -7,5 +7,6 @@ data transmitt protocol from pc to arduino:
 
 when arduino is in boot mode (8 pin is down) and is conected to pc with compiling an loading software,
 arduino send one byte(85) to the com port(uart)(witch is transfered to usb).Then arduino is waiting for lenght(lng.) of programm
-to erase eeprom(or flash), after that arduino is waiting for reciving the data (with lng. lenght).
-after compliting reciving arduino needs to be rebooted in normal mode to interpritate the programm.
+to erase eeprom(or flash),this operation takes some time, so we ned to wait 10(lng.*2)ms.
+After that arduino is waiting for recivingthe data (with lng. bytes).
+After compliting reciving arduino needs to be rebooted in normal mode to interpritate the programm.
