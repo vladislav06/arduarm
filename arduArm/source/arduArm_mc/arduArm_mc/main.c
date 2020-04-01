@@ -36,15 +36,15 @@ int main(void) {
 	
 	//---------
 	
-	uint8_t data = 0;
+//	uint8_t data = 0;
 	
 	DDRB = 0b0000000;		//all input
-	PORTB = 0xFF;			//pull up
-	data = PINB;
+	PORTB = 0x00;			
+	
 	
 	_delay_ms(1000);
 	
-	if(data == 0b00000000){	//if 8 is off
+	if(PINB & (1<<PB0)){	//if 8 is off
 		boot_eeprom();				// download programm and load it to eeprom
 	}
 	

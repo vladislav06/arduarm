@@ -3,7 +3,7 @@
 #define _USB_
 namespace USB {
 
-	 void write(char ComPortName[], uint8_t lpBuffer[],uint16_t last_cell);
+	 void write(char ComPortName[], uint8_t lpBuffer[]);
 	 
 }
 #endif

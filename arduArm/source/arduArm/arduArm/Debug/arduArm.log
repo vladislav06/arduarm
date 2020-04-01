@@ -1,2 +1,12 @@
-﻿  usb.cpp
+﻿  arduArm.cpp
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(165,24): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(166,24): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(168,25): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(181,9): warning C4018: >: несоответствие типов со знаком и без знака
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(250,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(258,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(266,22): warning C4244: =: преобразование "float" в "uint8_t", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(338,21): warning C4018: <=: несоответствие типов со знаком и без знака
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(361,28): warning C4244: =: преобразование "float" в "int", возможна потеря данных
+F:\projects\arduarm\arduArm\source\arduArm\arduArm\arduArm.cpp(325,7): warning C4101: Cline: неиспользованная локальная переменная
   arduArm.vcxproj -> F:\projects\arduarm\arduArm\source\arduArm\Debug\arduArm.exe

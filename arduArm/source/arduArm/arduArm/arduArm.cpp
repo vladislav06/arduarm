@@ -297,6 +297,7 @@ int main()
 	for (int i = 0; i < 1024; i++) {
 		EEPROM[i] = 0;
 	}
+	
 	pM cords;			//корды для углов
 	angles angles;		//углы
 	string path;		//путь
@@ -383,7 +384,7 @@ int main()
 	file.close();						//закрываем бадягу
 	eeprom_writer(EEPROM, end, data);	//send end byte
 	char ComPortName[] = "\\\\.\\COM4";	// порт в который шлем наш мусор
-	USB::write(ComPortName,EEPROM,eeprom_cell_num);		// ну и отсылаем
+	USB::write(ComPortName,EEPROM);		// ну и отсылаем
 
 	//eeprom_cell_num  last cell
 	

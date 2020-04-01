@@ -9,7 +9,7 @@
 #include <chrono>
 
 namespace USB {
-	void write(char ComPortName[], uint8_t lpBuffer[], uint16_t last_cell)
+	void write(char ComPortName[], uint8_t lpBuffer[])
 	{
 		
 
@@ -122,7 +122,7 @@ namespace USB {
 		std::cout << "wrirte" << std::endl;
 		uint8_t buffer[1];
 
-		//=============send lenght of data=============//
+		/*//=============send lenght of data=============//
 		buffer[0] = last_cell;
 
 			Status = WriteFile(hComm,               // Handle to the Serialport
@@ -131,6 +131,7 @@ namespace USB {
 			&dNoOfBytesWritten,			// No of bytes written to the port
 			NULL);
 		Sleep(10+(last_cell*2));
+		*/
 		//+++++++++++send data++++++++++++//
 		
 		for (int i = 0; i < 1024; i += 1) {
