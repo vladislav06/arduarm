@@ -42,9 +42,9 @@ int main(void) {
 	PORTB = 0x00;			
 	
 	
-	_delay_ms(1000);
+	_delay_ms(500);
 	
-	if(PINB & (1<<PB0)){	//if 8 is off
+	if(PINB & (1<<PB0)){	//if 8 is on
 		boot_eeprom();				// download programm and load it to eeprom
 	}
 	

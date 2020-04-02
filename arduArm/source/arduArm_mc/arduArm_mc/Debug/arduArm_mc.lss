@@ -3,31 +3,31 @@ arduArm_mc.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000002f4  2**0
+  0 .data         00000000  00800100  00800100  00000320  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000280  00000000  00000000  00000074  2**1
+  1 .text         000002ac  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000045  00800100  00800100  000002f4  2**0
+  2 .bss          00000045  00800100  00800100  00000320  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  000002f4  2**0
+  3 .comment      00000030  00000000  00000000  00000320  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000324  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000350  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000090  00000000  00000000  00000364  2**0
+  5 .debug_aranges 00000090  00000000  00000000  00000390  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000c05  00000000  00000000  000003f4  2**0
+  6 .debug_info   00000baa  00000000  00000000  00000420  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000090b  00000000  00000000  00000ff9  2**0
+  7 .debug_abbrev 000008a6  00000000  00000000  00000fca  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000614  00000000  00000000  00001904  2**0
+  8 .debug_line   000005fe  00000000  00000000  00001870  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000150  00000000  00000000  00001f18  2**2
+  9 .debug_frame  00000150  00000000  00000000  00001e70  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004e3  00000000  00000000  00002068  2**0
+ 10 .debug_str    000004f0  00000000  00000000  00001fc0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000489  00000000  00000000  0000254b  2**0
+ 11 .debug_loc    000004cc  00000000  00000000  000024b0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000088  00000000  00000000  000029d4  2**0
+ 12 .debug_ranges 00000088  00000000  00000000  0000297c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -51,8 +51,8 @@ Disassembly of section .text:
   3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   44:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  48:	0c 94 8a 00 	jmp	0x114	; 0x114 <__vector_18>
-  4c:	0c 94 b5 00 	jmp	0x16a	; 0x16a <__vector_19>
+  48:	0c 94 a0 00 	jmp	0x140	; 0x140 <__vector_18>
+  4c:	0c 94 cb 00 	jmp	0x196	; 0x196 <__vector_19>
   50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   54:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   58:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -81,8 +81,8 @@ Disassembly of section .text:
   7e:	a5 34       	cpi	r26, 0x45	; 69
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
-  84:	0e 94 14 01 	call	0x228	; 0x228 <main>
-  88:	0c 94 3e 01 	jmp	0x27c	; 0x27c <_exit>
+  84:	0e 94 2a 01 	call	0x254	; 0x254 <main>
+  88:	0c 94 54 01 	jmp	0x2a8	; 0x2a8 <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -96,404 +96,436 @@ void boot_eeprom(void){
 	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU));	//init uart to get data
   90:	87 e6       	ldi	r24, 0x67	; 103
   92:	90 e0       	ldi	r25, 0x00	; 0
-  94:	0e 94 df 00 	call	0x1be	; 0x1be <uart_init>
+  94:	0e 94 f5 00 	call	0x1ea	; 0x1ea <uart_init>
 	sei();
   98:	78 94       	sei
 	
-	
 	/* memory full erase */ 
 	uint16_t eeprom_cell = 0;
-  9a:	80 e0       	ldi	r24, 0x00	; 0
-  9c:	90 e0       	ldi	r25, 0x00	; 0
+	uint16_t progLenght = 0;
+	uint8_t recive[2];
+	uart_putc(85);	//готовы принимать
+  9a:	85 e5       	ldi	r24, 0x55	; 85
+  9c:	0e 94 0e 01 	call	0x21c	; 0x21c <uart_putc>
+	//============get disasembled data===================//
+	UCSR0B = (1<<RXEN0);
+  a0:	80 e1       	ldi	r24, 0x10	; 16
+  a2:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
 	
-	for(;eeprom_cell < 1024; eeprom_cell++){
+	while ( !(UCSR0A & 0b10000000) );
+  a6:	e0 ec       	ldi	r30, 0xC0	; 192
+  a8:	f0 e0       	ldi	r31, 0x00	; 0
+  aa:	80 81       	ld	r24, Z
+  ac:	88 23       	and	r24, r24
+  ae:	ec f7       	brge	.-6      	; 0xaa <boot_eeprom+0x1a>
+	recive[0] = UDR0;	
+  b0:	40 91 c6 00 	lds	r20, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+	
+	while ( !(UCSR0A & 0b10000000) );
+  b4:	e0 ec       	ldi	r30, 0xC0	; 192
+  b6:	f0 e0       	ldi	r31, 0x00	; 0
+  b8:	80 81       	ld	r24, Z
+  ba:	88 23       	and	r24, r24
+  bc:	ec f7       	brge	.-6      	; 0xb8 <boot_eeprom+0x28>
+	recive[1] = UDR0;
+  be:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+	
+	progLenght = (recive[1]<<8)|recive[0];	//assemble it in to uint16_t
+  c2:	50 e0       	ldi	r21, 0x00	; 0
+  c4:	58 2b       	or	r21, r24
+	
+	//=============erase eeprom=================//
+	for(;eeprom_cell < progLenght; eeprom_cell++){
+  c6:	41 15       	cp	r20, r1
+  c8:	51 05       	cpc	r21, r1
+  ca:	31 f1       	breq	.+76     	; 0x118 <boot_eeprom+0x88>
+  cc:	80 e0       	ldi	r24, 0x00	; 0
+  ce:	90 e0       	ldi	r25, 0x00	; 0
 			/* Wait for completion of previous write */
 			while(EECR & (1<<EEPE));
-  9e:	f9 99       	sbic	0x1f, 1	; 31
-  a0:	fe cf       	rjmp	.-4      	; 0x9e <boot_eeprom+0xe>
+  d0:	f9 99       	sbic	0x1f, 1	; 31
+  d2:	fe cf       	rjmp	.-4      	; 0xd0 <boot_eeprom+0x40>
 			
 			/* Set up address and Data Registers */
 			EEAR = eeprom_cell;
-  a2:	92 bd       	out	0x22, r25	; 34
-  a4:	81 bd       	out	0x21, r24	; 33
+  d4:	92 bd       	out	0x22, r25	; 34
+  d6:	81 bd       	out	0x21, r24	; 33
 			
 			/* erase only */
 			EECR |= (1<<EEPM0);
-  a6:	fc 9a       	sbi	0x1f, 4	; 31
+  d8:	fc 9a       	sbi	0x1f, 4	; 31
 			
 			/* Write logical one to EEMPE */
 			EECR |= (1<<EEMPE);
-  a8:	fa 9a       	sbi	0x1f, 2	; 31
+  da:	fa 9a       	sbi	0x1f, 2	; 31
 			/* start wrie*/
 			EECR |= (1<<EEPE);
-  aa:	f9 9a       	sbi	0x1f, 1	; 31
+  dc:	f9 9a       	sbi	0x1f, 1	; 31
+	recive[1] = UDR0;
 	
+	progLenght = (recive[1]<<8)|recive[0];	//assemble it in to uint16_t
 	
-	/* memory full erase */ 
-	uint16_t eeprom_cell = 0;
-	
-	for(;eeprom_cell < 1024; eeprom_cell++){
-  ac:	01 96       	adiw	r24, 0x01	; 1
-  ae:	81 15       	cp	r24, r1
-  b0:	24 e0       	ldi	r18, 0x04	; 4
-  b2:	92 07       	cpc	r25, r18
-  b4:	a1 f7       	brne	.-24     	; 0x9e <boot_eeprom+0xe>
-			
-	}
-	
-	eeprom_cell = 0;
-	//			indication		//
-	DDRB = 0b00100000;	//13 as output
-  b6:	80 e2       	ldi	r24, 0x20	; 32
-  b8:	84 b9       	out	0x04, r24	; 4
-	PORTB = 0b00000000;	//disable pull ups
-  ba:	15 b8       	out	0x05, r1	; 5
-	PORTB = 0b00100000;	// turn on build in led 
-  bc:	85 b9       	out	0x05, r24	; 5
-	// recive//
-	
-	uint8_t byte = 0;
-	
-	
-	uart_putc(85);	//готовы принимать
-  be:	85 e5       	ldi	r24, 0x55	; 85
-  c0:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <uart_putc>
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
-  c4:	89 ef       	ldi	r24, 0xF9	; 249
-  c6:	90 e0       	ldi	r25, 0x00	; 0
-  c8:	01 97       	sbiw	r24, 0x01	; 1
-  ca:	f1 f7       	brne	.-4      	; 0xc8 <boot_eeprom+0x38>
-  cc:	00 c0       	rjmp	.+0      	; 0xce <boot_eeprom+0x3e>
-  ce:	00 00       	nop
-	_delay_ms(1);
+	//=============erase eeprom=================//
+	for(;eeprom_cell < progLenght; eeprom_cell++){
+  de:	01 96       	adiw	r24, 0x01	; 1
+  e0:	48 17       	cp	r20, r24
+  e2:	59 07       	cpc	r21, r25
+  e4:	a9 f7       	brne	.-22     	; 0xd0 <boot_eeprom+0x40>
+  e6:	1f c0       	rjmp	.+62     	; 0x126 <boot_eeprom+0x96>
+	//_delay_ms(1);
 	
 	UCSR0B = (1<<RXEN0);  //  включаем прием
-  d0:	80 e1       	ldi	r24, 0x10	; 16
-  d2:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
-			/* start wrie*/
-			EECR |= (1<<EEPE);
-			
-	}
-	
-	eeprom_cell = 0;
-  d6:	20 e0       	ldi	r18, 0x00	; 0
-  d8:	30 e0       	ldi	r19, 0x00	; 0
-	_delay_ms(1);
-	
-	UCSR0B = (1<<RXEN0);  //  включаем прием
-	
-	while( eeprom_cell<1024){	
+	//=============write eeprom=============//
+	while( eeprom_cell < progLenght){	
 		while ( !(UCSR0A & 0b10000000) );	/* Wait for data to be received */
-  da:	e0 ec       	ldi	r30, 0xC0	; 192
-  dc:	f0 e0       	ldi	r31, 0x00	; 0
-		/* Wait for completion of previous write */
-		while(EECR & (1<<EEPE));
-		
-		/* set up address and data registers */
-		EEAR = eeprom_cell;
-		EEDR = UDR0;
-  de:	a6 ec       	ldi	r26, 0xC6	; 198
-  e0:	b0 e0       	ldi	r27, 0x00	; 0
-	_delay_ms(1);
-	
-	UCSR0B = (1<<RXEN0);  //  включаем прием
-	
-	while( eeprom_cell<1024){	
-		while ( !(UCSR0A & 0b10000000) );	/* Wait for data to be received */
-  e2:	80 81       	ld	r24, Z
-  e4:	88 23       	and	r24, r24
-  e6:	ec f7       	brge	.-6      	; 0xe2 <boot_eeprom+0x52>
+  e8:	80 81       	ld	r24, Z
+  ea:	88 23       	and	r24, r24
+  ec:	ec f7       	brge	.-6      	; 0xe8 <boot_eeprom+0x58>
 		
 												 
 		/* Wait for completion of previous write */
 		while(EECR & (1<<EEPE));
-  e8:	f9 99       	sbic	0x1f, 1	; 31
-  ea:	fe cf       	rjmp	.-4      	; 0xe8 <boot_eeprom+0x58>
+  ee:	f9 99       	sbic	0x1f, 1	; 31
+  f0:	fe cf       	rjmp	.-4      	; 0xee <boot_eeprom+0x5e>
 		
 		/* set up address and data registers */
 		EEAR = eeprom_cell;
-  ec:	32 bd       	out	0x22, r19	; 34
-  ee:	21 bd       	out	0x21, r18	; 33
+  f2:	32 bd       	out	0x22, r19	; 34
+  f4:	21 bd       	out	0x21, r18	; 33
 		EEDR = UDR0;
-  f0:	8c 91       	ld	r24, X
-  f2:	80 bd       	out	0x20, r24	; 32
+  f6:	8c 91       	ld	r24, X
+  f8:	80 bd       	out	0x20, r24	; 32
 		
 		/* write only */
 		EECR &=(0<<EEPM0);
-  f4:	8f b3       	in	r24, 0x1f	; 31
-  f6:	1f ba       	out	0x1f, r1	; 31
+  fa:	8f b3       	in	r24, 0x1f	; 31
+  fc:	1f ba       	out	0x1f, r1	; 31
 		EECR |= (1<<EEPM1);
-  f8:	fd 9a       	sbi	0x1f, 5	; 31
+  fe:	fd 9a       	sbi	0x1f, 5	; 31
 		
 		/* Write logical one to EEMPE */
 		EECR |= (1<<EEMPE);
-  fa:	fa 9a       	sbi	0x1f, 2	; 31
+ 100:	fa 9a       	sbi	0x1f, 2	; 31
 		
 		/* Start eeprom write by setting EEPE */
 		EECR |= (1<<EEPE);
-  fc:	f9 9a       	sbi	0x1f, 1	; 31
+ 102:	f9 9a       	sbi	0x1f, 1	; 31
 		
 		//eeprom_write_byte(eeprom_cell,UDR0);	//записываем в еепром
 		eeprom_cell++;		// €чейча +1
-  fe:	2f 5f       	subi	r18, 0xFF	; 255
- 100:	3f 4f       	sbci	r19, 0xFF	; 255
-	uart_putc(85);	//готовы принимать
-	_delay_ms(1);
+ 104:	2f 5f       	subi	r18, 0xFF	; 255
+ 106:	3f 4f       	sbci	r19, 0xFF	; 255
+	//uart_putc(85);	//готовы принимать
+	//_delay_ms(1);
 	
 	UCSR0B = (1<<RXEN0);  //  включаем прием
-	
-	while( eeprom_cell<1024){	
- 102:	21 15       	cp	r18, r1
- 104:	94 e0       	ldi	r25, 0x04	; 4
- 106:	39 07       	cpc	r19, r25
- 108:	61 f7       	brne	.-40     	; 0xe2 <boot_eeprom+0x52>
+	//=============write eeprom=============//
+	while( eeprom_cell < progLenght){	
+ 108:	42 17       	cp	r20, r18
+ 10a:	53 07       	cpc	r21, r19
+ 10c:	69 f7       	brne	.-38     	; 0xe8 <boot_eeprom+0x58>
 		//eeprom_write_byte(eeprom_cell,UDR0);	//записываем в еепром
 		eeprom_cell++;		// €чейча +1
 	}
 	
 	
 	uart_putc(0b10101010);	//закончили принимать
- 10a:	8a ea       	ldi	r24, 0xAA	; 170
- 10c:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <uart_putc>
+ 10e:	8a ea       	ldi	r24, 0xAA	; 170
+ 110:	0e 94 0e 01 	call	0x21c	; 0x21c <uart_putc>
 	
 	PORTB = 0b00000000;	// turn off build in led 
- 110:	15 b8       	out	0x05, r1	; 5
- 112:	08 95       	ret
+ 114:	15 b8       	out	0x05, r1	; 5
+}
+ 116:	08 95       	ret
+			
+	}
+	//uart_putc(86);
+	eeprom_cell = 0;
+	//			indication		//
+	DDRB = 0b00111000;	//13 as output
+ 118:	88 e3       	ldi	r24, 0x38	; 56
+ 11a:	84 b9       	out	0x04, r24	; 4
+	PORTB = 0b00111000;	// turn on build in led 
+ 11c:	85 b9       	out	0x05, r24	; 5
+	
+	
+	//uart_putc(85);	//готовы принимать
+	//_delay_ms(1);
+	
+	UCSR0B = (1<<RXEN0);  //  включаем прием
+ 11e:	80 e1       	ldi	r24, 0x10	; 16
+ 120:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
+ 124:	f4 cf       	rjmp	.-24     	; 0x10e <boot_eeprom+0x7e>
+			
+	}
+	//uart_putc(86);
+	eeprom_cell = 0;
+	//			indication		//
+	DDRB = 0b00111000;	//13 as output
+ 126:	88 e3       	ldi	r24, 0x38	; 56
+ 128:	84 b9       	out	0x04, r24	; 4
+	PORTB = 0b00111000;	// turn on build in led 
+ 12a:	85 b9       	out	0x05, r24	; 5
+	
+	
+	//uart_putc(85);	//готовы принимать
+	//_delay_ms(1);
+	
+	UCSR0B = (1<<RXEN0);  //  включаем прием
+ 12c:	80 e1       	ldi	r24, 0x10	; 16
+ 12e:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
+ 132:	20 e0       	ldi	r18, 0x00	; 0
+ 134:	30 e0       	ldi	r19, 0x00	; 0
+	//=============write eeprom=============//
+	while( eeprom_cell < progLenght){	
+		while ( !(UCSR0A & 0b10000000) );	/* Wait for data to be received */
+ 136:	e0 ec       	ldi	r30, 0xC0	; 192
+ 138:	f0 e0       	ldi	r31, 0x00	; 0
+		/* Wait for completion of previous write */
+		while(EECR & (1<<EEPE));
+		
+		/* set up address and data registers */
+		EEAR = eeprom_cell;
+		EEDR = UDR0;
+ 13a:	a6 ec       	ldi	r26, 0xC6	; 198
+ 13c:	b0 e0       	ldi	r27, 0x00	; 0
+ 13e:	d4 cf       	rjmp	.-88     	; 0xe8 <boot_eeprom+0x58>
 
-00000114 <__vector_18>:
+00000140 <__vector_18>:
 Input:    None
 Returns:  None
 **************************************************************************/
 void uart_flush(void)
 {
         UART_RxHead = UART_RxTail;
- 114:	1f 92       	push	r1
- 116:	0f 92       	push	r0
- 118:	0f b6       	in	r0, 0x3f	; 63
- 11a:	0f 92       	push	r0
- 11c:	11 24       	eor	r1, r1
- 11e:	2f 93       	push	r18
- 120:	8f 93       	push	r24
- 122:	9f 93       	push	r25
- 124:	ef 93       	push	r30
- 126:	ff 93       	push	r31
- 128:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7e00c0>
- 12c:	20 91 c6 00 	lds	r18, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
- 130:	88 71       	andi	r24, 0x18	; 24
- 132:	e0 91 02 01 	lds	r30, 0x0102	; 0x800102 <UART_RxHead>
- 136:	ef 5f       	subi	r30, 0xFF	; 255
- 138:	ef 71       	andi	r30, 0x1F	; 31
- 13a:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <UART_RxTail>
- 13e:	e9 17       	cp	r30, r25
- 140:	39 f0       	breq	.+14     	; 0x150 <__vector_18+0x3c>
- 142:	e0 93 02 01 	sts	0x0102, r30	; 0x800102 <UART_RxHead>
- 146:	f0 e0       	ldi	r31, 0x00	; 0
- 148:	eb 5f       	subi	r30, 0xFB	; 251
- 14a:	fe 4f       	sbci	r31, 0xFE	; 254
- 14c:	20 83       	st	Z, r18
- 14e:	01 c0       	rjmp	.+2      	; 0x152 <__vector_18+0x3e>
- 150:	82 e0       	ldi	r24, 0x02	; 2
- 152:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
- 156:	ff 91       	pop	r31
- 158:	ef 91       	pop	r30
- 15a:	9f 91       	pop	r25
- 15c:	8f 91       	pop	r24
- 15e:	2f 91       	pop	r18
- 160:	0f 90       	pop	r0
- 162:	0f be       	out	0x3f, r0	; 63
- 164:	0f 90       	pop	r0
- 166:	1f 90       	pop	r1
- 168:	18 95       	reti
+ 140:	1f 92       	push	r1
+ 142:	0f 92       	push	r0
+ 144:	0f b6       	in	r0, 0x3f	; 63
+ 146:	0f 92       	push	r0
+ 148:	11 24       	eor	r1, r1
+ 14a:	2f 93       	push	r18
+ 14c:	8f 93       	push	r24
+ 14e:	9f 93       	push	r25
+ 150:	ef 93       	push	r30
+ 152:	ff 93       	push	r31
+ 154:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7e00c0>
+ 158:	20 91 c6 00 	lds	r18, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+ 15c:	88 71       	andi	r24, 0x18	; 24
+ 15e:	e0 91 02 01 	lds	r30, 0x0102	; 0x800102 <UART_RxHead>
+ 162:	ef 5f       	subi	r30, 0xFF	; 255
+ 164:	ef 71       	andi	r30, 0x1F	; 31
+ 166:	90 91 01 01 	lds	r25, 0x0101	; 0x800101 <UART_RxTail>
+ 16a:	e9 17       	cp	r30, r25
+ 16c:	39 f0       	breq	.+14     	; 0x17c <__vector_18+0x3c>
+ 16e:	e0 93 02 01 	sts	0x0102, r30	; 0x800102 <UART_RxHead>
+ 172:	f0 e0       	ldi	r31, 0x00	; 0
+ 174:	eb 5f       	subi	r30, 0xFB	; 251
+ 176:	fe 4f       	sbci	r31, 0xFE	; 254
+ 178:	20 83       	st	Z, r18
+ 17a:	01 c0       	rjmp	.+2      	; 0x17e <__vector_18+0x3e>
+ 17c:	82 e0       	ldi	r24, 0x02	; 2
+ 17e:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <_edata>
+ 182:	ff 91       	pop	r31
+ 184:	ef 91       	pop	r30
+ 186:	9f 91       	pop	r25
+ 188:	8f 91       	pop	r24
+ 18a:	2f 91       	pop	r18
+ 18c:	0f 90       	pop	r0
+ 18e:	0f be       	out	0x3f, r0	; 63
+ 190:	0f 90       	pop	r0
+ 192:	1f 90       	pop	r1
+ 194:	18 95       	reti
 
-0000016a <__vector_19>:
- 16a:	1f 92       	push	r1
- 16c:	0f 92       	push	r0
- 16e:	0f b6       	in	r0, 0x3f	; 63
- 170:	0f 92       	push	r0
- 172:	11 24       	eor	r1, r1
- 174:	8f 93       	push	r24
- 176:	9f 93       	push	r25
- 178:	ef 93       	push	r30
- 17a:	ff 93       	push	r31
- 17c:	90 91 04 01 	lds	r25, 0x0104	; 0x800104 <UART_TxHead>
- 180:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <UART_TxTail>
- 184:	98 17       	cp	r25, r24
- 186:	69 f0       	breq	.+26     	; 0x1a2 <__vector_19+0x38>
- 188:	e0 91 03 01 	lds	r30, 0x0103	; 0x800103 <UART_TxTail>
- 18c:	ef 5f       	subi	r30, 0xFF	; 255
- 18e:	ef 71       	andi	r30, 0x1F	; 31
- 190:	e0 93 03 01 	sts	0x0103, r30	; 0x800103 <UART_TxTail>
- 194:	f0 e0       	ldi	r31, 0x00	; 0
- 196:	eb 5d       	subi	r30, 0xDB	; 219
- 198:	fe 4f       	sbci	r31, 0xFE	; 254
- 19a:	80 81       	ld	r24, Z
- 19c:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
- 1a0:	05 c0       	rjmp	.+10     	; 0x1ac <__vector_19+0x42>
- 1a2:	e1 ec       	ldi	r30, 0xC1	; 193
- 1a4:	f0 e0       	ldi	r31, 0x00	; 0
- 1a6:	80 81       	ld	r24, Z
- 1a8:	8f 7d       	andi	r24, 0xDF	; 223
- 1aa:	80 83       	st	Z, r24
- 1ac:	ff 91       	pop	r31
- 1ae:	ef 91       	pop	r30
- 1b0:	9f 91       	pop	r25
- 1b2:	8f 91       	pop	r24
- 1b4:	0f 90       	pop	r0
- 1b6:	0f be       	out	0x3f, r0	; 63
- 1b8:	0f 90       	pop	r0
- 1ba:	1f 90       	pop	r1
- 1bc:	18 95       	reti
+00000196 <__vector_19>:
+ 196:	1f 92       	push	r1
+ 198:	0f 92       	push	r0
+ 19a:	0f b6       	in	r0, 0x3f	; 63
+ 19c:	0f 92       	push	r0
+ 19e:	11 24       	eor	r1, r1
+ 1a0:	8f 93       	push	r24
+ 1a2:	9f 93       	push	r25
+ 1a4:	ef 93       	push	r30
+ 1a6:	ff 93       	push	r31
+ 1a8:	90 91 04 01 	lds	r25, 0x0104	; 0x800104 <UART_TxHead>
+ 1ac:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <UART_TxTail>
+ 1b0:	98 17       	cp	r25, r24
+ 1b2:	69 f0       	breq	.+26     	; 0x1ce <__vector_19+0x38>
+ 1b4:	e0 91 03 01 	lds	r30, 0x0103	; 0x800103 <UART_TxTail>
+ 1b8:	ef 5f       	subi	r30, 0xFF	; 255
+ 1ba:	ef 71       	andi	r30, 0x1F	; 31
+ 1bc:	e0 93 03 01 	sts	0x0103, r30	; 0x800103 <UART_TxTail>
+ 1c0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1c2:	eb 5d       	subi	r30, 0xDB	; 219
+ 1c4:	fe 4f       	sbci	r31, 0xFE	; 254
+ 1c6:	80 81       	ld	r24, Z
+ 1c8:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+ 1cc:	05 c0       	rjmp	.+10     	; 0x1d8 <__vector_19+0x42>
+ 1ce:	e1 ec       	ldi	r30, 0xC1	; 193
+ 1d0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1d2:	80 81       	ld	r24, Z
+ 1d4:	8f 7d       	andi	r24, 0xDF	; 223
+ 1d6:	80 83       	st	Z, r24
+ 1d8:	ff 91       	pop	r31
+ 1da:	ef 91       	pop	r30
+ 1dc:	9f 91       	pop	r25
+ 1de:	8f 91       	pop	r24
+ 1e0:	0f 90       	pop	r0
+ 1e2:	0f be       	out	0x3f, r0	; 63
+ 1e4:	0f 90       	pop	r0
+ 1e6:	1f 90       	pop	r1
+ 1e8:	18 95       	reti
 
-000001be <uart_init>:
- 1be:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <UART_TxHead>
- 1c2:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <UART_TxTail>
- 1c6:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <UART_RxHead>
- 1ca:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <UART_RxTail>
- 1ce:	99 23       	and	r25, r25
- 1d0:	24 f4       	brge	.+8      	; 0x1da <uart_init+0x1c>
- 1d2:	22 e0       	ldi	r18, 0x02	; 2
- 1d4:	20 93 c0 00 	sts	0x00C0, r18	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7e00c0>
- 1d8:	9f 77       	andi	r25, 0x7F	; 127
- 1da:	90 93 c5 00 	sts	0x00C5, r25	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
- 1de:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
- 1e2:	88 e9       	ldi	r24, 0x98	; 152
- 1e4:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
- 1e8:	86 e0       	ldi	r24, 0x06	; 6
- 1ea:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
- 1ee:	08 95       	ret
+000001ea <uart_init>:
+ 1ea:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <UART_TxHead>
+ 1ee:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <UART_TxTail>
+ 1f2:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <UART_RxHead>
+ 1f6:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <UART_RxTail>
+ 1fa:	99 23       	and	r25, r25
+ 1fc:	24 f4       	brge	.+8      	; 0x206 <uart_init+0x1c>
+ 1fe:	22 e0       	ldi	r18, 0x02	; 2
+ 200:	20 93 c0 00 	sts	0x00C0, r18	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7e00c0>
+ 204:	9f 77       	andi	r25, 0x7F	; 127
+ 206:	90 93 c5 00 	sts	0x00C5, r25	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
+ 20a:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
+ 20e:	88 e9       	ldi	r24, 0x98	; 152
+ 210:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
+ 214:	86 e0       	ldi	r24, 0x06	; 6
+ 216:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
+ 21a:	08 95       	ret
 
-000001f0 <uart_putc>:
- 1f0:	20 91 04 01 	lds	r18, 0x0104	; 0x800104 <UART_TxHead>
- 1f4:	2f 5f       	subi	r18, 0xFF	; 255
- 1f6:	2f 71       	andi	r18, 0x1F	; 31
- 1f8:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <UART_TxTail>
- 1fc:	29 17       	cp	r18, r25
- 1fe:	e1 f3       	breq	.-8      	; 0x1f8 <uart_putc+0x8>
- 200:	e2 2f       	mov	r30, r18
- 202:	f0 e0       	ldi	r31, 0x00	; 0
- 204:	eb 5d       	subi	r30, 0xDB	; 219
- 206:	fe 4f       	sbci	r31, 0xFE	; 254
- 208:	80 83       	st	Z, r24
- 20a:	20 93 04 01 	sts	0x0104, r18	; 0x800104 <UART_TxHead>
- 20e:	e1 ec       	ldi	r30, 0xC1	; 193
- 210:	f0 e0       	ldi	r31, 0x00	; 0
- 212:	80 81       	ld	r24, Z
- 214:	80 62       	ori	r24, 0x20	; 32
- 216:	80 83       	st	Z, r24
- 218:	08 95       	ret
+0000021c <uart_putc>:
+ 21c:	20 91 04 01 	lds	r18, 0x0104	; 0x800104 <UART_TxHead>
+ 220:	2f 5f       	subi	r18, 0xFF	; 255
+ 222:	2f 71       	andi	r18, 0x1F	; 31
+ 224:	90 91 03 01 	lds	r25, 0x0103	; 0x800103 <UART_TxTail>
+ 228:	29 17       	cp	r18, r25
+ 22a:	e1 f3       	breq	.-8      	; 0x224 <uart_putc+0x8>
+ 22c:	e2 2f       	mov	r30, r18
+ 22e:	f0 e0       	ldi	r31, 0x00	; 0
+ 230:	eb 5d       	subi	r30, 0xDB	; 219
+ 232:	fe 4f       	sbci	r31, 0xFE	; 254
+ 234:	80 83       	st	Z, r24
+ 236:	20 93 04 01 	sts	0x0104, r18	; 0x800104 <UART_TxHead>
+ 23a:	e1 ec       	ldi	r30, 0xC1	; 193
+ 23c:	f0 e0       	ldi	r31, 0x00	; 0
+ 23e:	80 81       	ld	r24, Z
+ 240:	80 62       	ori	r24, 0x20	; 32
+ 242:	80 83       	st	Z, r24
+ 244:	08 95       	ret
 
-0000021a <EEPROM_read>:
+00000246 <EEPROM_read>:
 
 #define UART_BAUD_RATE 9600
 unsigned char EEPROM_read(unsigned int uiAddress)
 {
 	/* Wait for completion of previous write */
 	while(EECR & (1<<EEPE))
- 21a:	f9 99       	sbic	0x1f, 1	; 31
- 21c:	fe cf       	rjmp	.-4      	; 0x21a <EEPROM_read>
+ 246:	f9 99       	sbic	0x1f, 1	; 31
+ 248:	fe cf       	rjmp	.-4      	; 0x246 <EEPROM_read>
 	;
 	/* Set up address register */
 	EEAR = uiAddress;
- 21e:	92 bd       	out	0x22, r25	; 34
- 220:	81 bd       	out	0x21, r24	; 33
+ 24a:	92 bd       	out	0x22, r25	; 34
+ 24c:	81 bd       	out	0x21, r24	; 33
 	/* Start eeprom read by writing EERE */
 	EECR |= (1<<EERE);
- 222:	f8 9a       	sbi	0x1f, 0	; 31
+ 24e:	f8 9a       	sbi	0x1f, 0	; 31
 	/* Return data from Data Register */
 	return EEDR;
- 224:	80 b5       	in	r24, 0x20	; 32
+ 250:	80 b5       	in	r24, 0x20	; 32
 }
- 226:	08 95       	ret
+ 252:	08 95       	ret
 
-00000228 <main>:
+00000254 <main>:
 
 int main(void) {
- 228:	cf 93       	push	r28
- 22a:	df 93       	push	r29
+ 254:	cf 93       	push	r28
+ 256:	df 93       	push	r29
 	//tmp
 	uart_init( UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU));	//init uart to get data
- 22c:	87 e6       	ldi	r24, 0x67	; 103
- 22e:	90 e0       	ldi	r25, 0x00	; 0
- 230:	0e 94 df 00 	call	0x1be	; 0x1be <uart_init>
+ 258:	87 e6       	ldi	r24, 0x67	; 103
+ 25a:	90 e0       	ldi	r25, 0x00	; 0
+ 25c:	0e 94 f5 00 	call	0x1ea	; 0x1ea <uart_init>
 	sei();
- 234:	78 94       	sei
+ 260:	78 94       	sei
 	
 	//---------
 	
 //	uint8_t data = 0;
 	
 	DDRB = 0b0000000;		//all input
- 236:	14 b8       	out	0x04, r1	; 4
+ 262:	14 b8       	out	0x04, r1	; 4
 	PORTB = 0x00;			
- 238:	15 b8       	out	0x05, r1	; 5
- 23a:	2f ef       	ldi	r18, 0xFF	; 255
- 23c:	83 ed       	ldi	r24, 0xD3	; 211
- 23e:	90 e3       	ldi	r25, 0x30	; 48
- 240:	21 50       	subi	r18, 0x01	; 1
- 242:	80 40       	sbci	r24, 0x00	; 0
- 244:	90 40       	sbci	r25, 0x00	; 0
- 246:	e1 f7       	brne	.-8      	; 0x240 <main+0x18>
- 248:	00 c0       	rjmp	.+0      	; 0x24a <main+0x22>
- 24a:	00 00       	nop
+ 264:	15 b8       	out	0x05, r1	; 5
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 266:	2f ef       	ldi	r18, 0xFF	; 255
+ 268:	89 e6       	ldi	r24, 0x69	; 105
+ 26a:	98 e1       	ldi	r25, 0x18	; 24
+ 26c:	21 50       	subi	r18, 0x01	; 1
+ 26e:	80 40       	sbci	r24, 0x00	; 0
+ 270:	90 40       	sbci	r25, 0x00	; 0
+ 272:	e1 f7       	brne	.-8      	; 0x26c <main+0x18>
+ 274:	00 c0       	rjmp	.+0      	; 0x276 <main+0x22>
+ 276:	00 00       	nop
 	
 	
-	_delay_ms(1000);
+	_delay_ms(500);
 	
-	if(PINB & (1<<PB0)){	//if 8 is off
- 24c:	18 9b       	sbis	0x03, 0	; 3
- 24e:	0e c0       	rjmp	.+28     	; 0x26c <main+0x44>
+	if(PINB & (1<<PB0)){	//if 8 is on
+ 278:	18 9b       	sbis	0x03, 0	; 3
+ 27a:	0e c0       	rjmp	.+28     	; 0x298 <main+0x44>
 		boot_eeprom();				// download programm and load it to eeprom
- 250:	0e 94 48 00 	call	0x90	; 0x90 <boot_eeprom>
- 254:	0b c0       	rjmp	.+22     	; 0x26c <main+0x44>
+ 27c:	0e 94 48 00 	call	0x90	; 0x90 <boot_eeprom>
+ 280:	0b c0       	rjmp	.+22     	; 0x298 <main+0x44>
 	
 	
 	
 			
 	for(uint16_t i = 0; i < 1024;i++){	//отправл€ем в юарт дл€ дебага
 		uart_putc(EEPROM_read(i));
- 256:	ce 01       	movw	r24, r28
- 258:	0e 94 0d 01 	call	0x21a	; 0x21a <EEPROM_read>
- 25c:	0e 94 f8 00 	call	0x1f0	; 0x1f0 <uart_putc>
+ 282:	ce 01       	movw	r24, r28
+ 284:	0e 94 23 01 	call	0x246	; 0x246 <EEPROM_read>
+ 288:	0e 94 0e 01 	call	0x21c	; 0x21c <uart_putc>
 	
 	
 	
 	
 			
 	for(uint16_t i = 0; i < 1024;i++){	//отправл€ем в юарт дл€ дебага
- 260:	21 96       	adiw	r28, 0x01	; 1
- 262:	c1 15       	cp	r28, r1
- 264:	24 e0       	ldi	r18, 0x04	; 4
- 266:	d2 07       	cpc	r29, r18
- 268:	b1 f7       	brne	.-20     	; 0x256 <main+0x2e>
- 26a:	03 c0       	rjmp	.+6      	; 0x272 <main+0x4a>
+ 28c:	21 96       	adiw	r28, 0x01	; 1
+ 28e:	c1 15       	cp	r28, r1
+ 290:	24 e0       	ldi	r18, 0x04	; 4
+ 292:	d2 07       	cpc	r29, r18
+ 294:	b1 f7       	brne	.-20     	; 0x282 <main+0x2e>
+ 296:	03 c0       	rjmp	.+6      	; 0x29e <main+0x4a>
 	EECR |= (1<<EERE);
 	/* Return data from Data Register */
 	return EEDR;
 }
 
 int main(void) {
- 26c:	c0 e0       	ldi	r28, 0x00	; 0
- 26e:	d0 e0       	ldi	r29, 0x00	; 0
- 270:	f2 cf       	rjmp	.-28     	; 0x256 <main+0x2e>
+ 298:	c0 e0       	ldi	r28, 0x00	; 0
+ 29a:	d0 e0       	ldi	r29, 0x00	; 0
+ 29c:	f2 cf       	rjmp	.-28     	; 0x282 <main+0x2e>
 		uart_putc(EEPROM_read(i));
 	}
 	
 	
 	
 }
- 272:	80 e0       	ldi	r24, 0x00	; 0
- 274:	90 e0       	ldi	r25, 0x00	; 0
- 276:	df 91       	pop	r29
- 278:	cf 91       	pop	r28
- 27a:	08 95       	ret
+ 29e:	80 e0       	ldi	r24, 0x00	; 0
+ 2a0:	90 e0       	ldi	r25, 0x00	; 0
+ 2a2:	df 91       	pop	r29
+ 2a4:	cf 91       	pop	r28
+ 2a6:	08 95       	ret
 
-0000027c <_exit>:
- 27c:	f8 94       	cli
+000002a8 <_exit>:
+ 2a8:	f8 94       	cli
 
-0000027e <__stop_program>:
- 27e:	ff cf       	rjmp	.-2      	; 0x27e <__stop_program>
+000002aa <__stop_program>:
+ 2aa:	ff cf       	rjmp	.-2      	; 0x2aa <__stop_program>

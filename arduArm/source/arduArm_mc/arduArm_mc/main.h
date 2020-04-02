@@ -11,7 +11,9 @@
 #define MAIN_H_
 
 #define F_CPU 16000000UL
+
 #define FOSC 16000000
+#include <util/delay.h>
 #include <avr/pgmspace.h>
 #include <avr/io.h>
 #include <stdio.h>
@@ -19,7 +21,7 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
+
 #include <uart.c>
 #include <uart.h>
 #include <avr/eeprom.h>

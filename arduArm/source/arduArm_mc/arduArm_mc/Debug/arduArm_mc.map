@@ -267,7 +267,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x280
+.text           0x00000000      0x2ac
  *(.vectors)
  .vectors       0x00000000       0x68 F:/atmel studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -351,30 +351,30 @@ END GROUP
                 0x00000090                . = ALIGN (0x2)
  *(.text.*)
  .text.boot_eeprom
-                0x00000090       0x84 bootloader.o
+                0x00000090       0xb0 bootloader.o
                 0x00000090                boot_eeprom
  .text.__vector_18
-                0x00000114       0x56 main.o
-                0x00000114                __vector_18
+                0x00000140       0x56 main.o
+                0x00000140                __vector_18
  .text.__vector_19
-                0x0000016a       0x54 main.o
-                0x0000016a                __vector_19
+                0x00000196       0x54 main.o
+                0x00000196                __vector_19
  .text.uart_init
-                0x000001be       0x32 main.o
-                0x000001be                uart_init
+                0x000001ea       0x32 main.o
+                0x000001ea                uart_init
  .text.uart_putc
-                0x000001f0       0x2a main.o
-                0x000001f0                uart_putc
+                0x0000021c       0x2a main.o
+                0x0000021c                uart_putc
  .text.EEPROM_read
-                0x0000021a        0xe main.o
-                0x0000021a                EEPROM_read
- .text.main     0x00000228       0x54 main.o
-                0x00000228                main
-                0x0000027c                . = ALIGN (0x2)
+                0x00000246        0xe main.o
+                0x00000246                EEPROM_read
+ .text.main     0x00000254       0x54 main.o
+                0x00000254                main
+                0x000002a8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000027c        0x0 f:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x0000027c                _exit
-                0x0000027c                exit
+ .fini9         0x000002a8        0x0 f:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x000002a8                _exit
+                0x000002a8                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -393,11 +393,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000027c        0x4 f:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x000002a8        0x4 f:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000280                _etext = .
+                0x000002ac                _etext = .
 
-.data           0x00800100        0x0 load address 0x00000280
+.data           0x00800100        0x0 load address 0x000002ac
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -429,8 +429,8 @@ END GROUP
                 0x00800125       0x20 main.o
  *(COMMON)
                 0x00800145                PROVIDE (__bss_end, .)
-                0x00000280                __data_load_start = LOADADDR (.data)
-                0x00000280                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000002ac                __data_load_start = LOADADDR (.data)
+                0x000002ac                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800145        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -512,41 +512,41 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xc05
+.debug_info     0x00000000      0xbaa
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 F:/atmel studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x189 bootloader.o
- .debug_info    0x0000077d      0x488 main.o
+ .debug_info    0x000005f4      0x12e bootloader.o
+ .debug_info    0x00000722      0x488 main.o
 
-.debug_abbrev   0x00000000      0x90b
+.debug_abbrev   0x00000000      0x8a6
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 F:/atmel studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2      0x10f bootloader.o
- .debug_abbrev  0x000006b1      0x25a main.o
+ .debug_abbrev  0x000005a2       0xaa bootloader.o
+ .debug_abbrev  0x0000064c      0x25a main.o
 
-.debug_line     0x00000000      0x614
+.debug_line     0x00000000      0x5fe
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 F:/atmel studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000133      0x1af bootloader.o
- .debug_line    0x000002e2      0x332 main.o
+ .debug_line    0x00000133      0x199 bootloader.o
+ .debug_line    0x000002cc      0x332 main.o
 
 .debug_frame    0x00000000      0x150
  *(.debug_frame)
  .debug_frame   0x00000000       0x24 bootloader.o
  .debug_frame   0x00000024      0x12c main.o
 
-.debug_str      0x00000000      0x4e3
+.debug_str      0x00000000      0x4f0
  *(.debug_str)
  .debug_str     0x00000000      0x208 F:/atmel studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x1bc bootloader.o
-                                0x1f0 (size before relaxing)
- .debug_str     0x000003c4      0x11f main.o
+ .debug_str     0x00000208      0x187 bootloader.o
+                                0x1bb (size before relaxing)
+ .debug_str     0x0000038f      0x161 main.o
                                 0x2f1 (size before relaxing)
 
-.debug_loc      0x00000000      0x489
+.debug_loc      0x00000000      0x4cc
  *(.debug_loc)
- .debug_loc     0x00000000       0x86 bootloader.o
- .debug_loc     0x00000086      0x403 main.o
+ .debug_loc     0x00000000       0xc9 bootloader.o
+ .debug_loc     0x000000c9      0x403 main.o
 
 .debug_macinfo
  *(.debug_macinfo)

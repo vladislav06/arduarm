@@ -285,6 +285,7 @@ void eeprom_writer( uint8_t *eeprom, unsigned int command ,data_E data) {
 	else if (command == end) { 
 		controll_byte = command;
 		*eeprom++ = command;
+		eeprom_cell_num++;
 	}
 }
 
@@ -383,8 +384,9 @@ int main()
 
 	file.close();						//закрываем бадягу
 	eeprom_writer(EEPROM, end, data);	//send end byte
+
 	char ComPortName[] = "\\\\.\\COM4";	// порт в который шлем наш мусор
-	USB::write(ComPortName,EEPROM);		// ну и отсылаем
+	USB::write(ComPortName,EEPROM, eeprom_cell_num);		// ну и отсылаем
 
 	//eeprom_cell_num  last cell
 	

@@ -22,8 +22,22 @@ void boot_eeprom(void){
 	
 	/* memory full erase */ 
 	uint16_t eeprom_cell = 0;
+	uint16_t progLenght = 0;
+	uint8_t recive[2];
+	uart_putc(85);	//готовы принимать
+	//============get disasembled data===================//
+	UCSR0B = (1<<RXEN0);
 	
-	for(;eeprom_cell < 1024; eeprom_cell++){
+	while ( !(UCSR0A & 0b10000000) );
+	recive[0] = UDR0;	
+	
+	while ( !(UCSR0A & 0b10000000) );
+	recive[1] = UDR0;
+	
+	progLenght = (recive[1]<<8)|recive[0];	//assemble it in to uint16_t
+	
+	//=============erase eeprom=================//
+	for(;eeprom_cell < progLenght; eeprom_cell++){
 			/* Wait for completion of previous write */
 			while(EECR & (1<<EEPE));
 			
@@ -39,24 +53,23 @@ void boot_eeprom(void){
 			EECR |= (1<<EEPE);
 			
 	}
-	
+	//uart_putc(86);
 	eeprom_cell = 0;
 	//			indication		//
-	DDRB = 0b00100000;	//13 as output
-	PORTB = 0b00000000;	//disable pull ups
-	PORTB = 0b00100000;	// turn on build in led 
+	DDRB = 0b00111000;	//13 as output
+	PORTB = 0b00111000;	// turn on build in led 
 	
 	// recive//
 	
-	uint8_t byte = 0;
+	//uint8_t byte = 0;
 	
 	
-	uart_putc(85);	//готовы принимать
-	_delay_ms(1);
+	//uart_putc(85);	//готовы принимать
+	//_delay_ms(1);
 	
 	UCSR0B = (1<<RXEN0);  //  включаем прием
-	
-	while( eeprom_cell<1024){	
+	//=============write eeprom=============//
+	while( eeprom_cell < progLenght){	
 		while ( !(UCSR0A & 0b10000000) );	/* Wait for data to be received */
 		
 												 
